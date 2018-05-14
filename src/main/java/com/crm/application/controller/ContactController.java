@@ -1,0 +1,70 @@
+package com.crm.application.controller;
+
+import com.crm.application.repository.ContactRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import com.crm.application.model.Contact;
+import com.crm.application.service.ContactService;
+
+import javax.validation.Valid;
+
+
+@RestController
+public class ContactController {
+
+
+    private final ContactRepository contactRepository;
+    private final ContactService contactService;
+
+    @Autowired
+    public ContactController(ContactRepository contactRepository, ContactService contactService) {
+        this.contactRepository = contactRepository;
+        this.contactService = contactService;
+    }
+
+    @RequestMapping(value = "/contact/add/{id}", method = RequestMethod.POST)
+    public ResponseEntity createContact(@PathVariable("id") Long id, @RequestBody Contact contact, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        } else {
+            contactService.addContact(id, contact);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+    }
+
+    @RequestMapping(value = "/contact", method = RequestMethod.PUT)
+    public ResponseEntity<Contact> updateContact(@Valid @RequestBody Contact contact, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        } else {
+            contactService.updateContact(contact);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/contact/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteContact(@PathVariable("id") Long id) {
+        if (contactService.getContactById(id).isPresent()) {
+            contactService.deleteContactById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/contact/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Contact> getContact(@PathVariable Long id) {
+        Contact contact = contactRepository.findOneById(id);
+        if (contact == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(contact, HttpStatus.OK);
+    }
+
+}
+
+
+
