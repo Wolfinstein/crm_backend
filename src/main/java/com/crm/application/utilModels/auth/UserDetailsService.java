@@ -1,12 +1,12 @@
 package com.crm.application.utilModels.auth;
 
+import com.crm.application.model.User;
+import com.crm.application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.crm.application.model.User;
-import com.crm.application.repository.UserRepository;
 
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {

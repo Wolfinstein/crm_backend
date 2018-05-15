@@ -1,8 +1,8 @@
 package com.crm.application.utilModels.user;
 
-import groovy.transform.EqualsAndHashCode;
 import com.crm.application.model.User;
 import com.crm.application.utilModels.response.OperationResponse;
+import groovy.transform.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = false)
 public class UserResponse extends OperationResponse {

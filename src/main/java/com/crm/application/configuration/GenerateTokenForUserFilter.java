@@ -1,5 +1,9 @@
 package com.crm.application.configuration;
 
+import com.crm.application.utilModels.auth.TokenUser;
+import com.crm.application.utilModels.auth.TokenUtil;
+import com.crm.application.utilModels.response.OperationResponse;
+import com.crm.application.utilModels.session.SessionItem;
 import com.crm.application.utilModels.session.SessionResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -16,10 +20,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import com.crm.application.utilModels.auth.TokenUser;
-import com.crm.application.utilModels.auth.TokenUtil;
-import com.crm.application.utilModels.response.OperationResponse;
-import com.crm.application.utilModels.session.SessionItem;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

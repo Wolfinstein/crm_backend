@@ -1,5 +1,6 @@
 package com.crm.application.configuration;
 
+import com.crm.application.utilModels.auth.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.crm.application.utilModels.auth.TokenUtil;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().and()
                 .anonymous().and()
                 .csrf().disable()
-                .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
+                .addFilterBefore(new CORSFilter(), ChannelProcessingFilter.class)
                 .addFilterBefore(new VerifyTokenFilter(tokenUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new GenerateTokenForUserFilter("/session", authenticationManager(), tokenUtil), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()

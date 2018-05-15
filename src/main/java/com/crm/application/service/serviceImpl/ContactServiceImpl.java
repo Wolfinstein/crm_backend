@@ -1,11 +1,11 @@
 package com.crm.application.service.serviceImpl;
 
+import com.crm.application.model.Contact;
 import com.crm.application.repository.ClientRepository;
 import com.crm.application.repository.ContactRepository;
+import com.crm.application.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.crm.application.model.Contact;
-import com.crm.application.service.ContactService;
 
 import java.util.Optional;
 

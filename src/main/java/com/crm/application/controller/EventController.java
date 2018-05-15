@@ -1,12 +1,13 @@
 package com.crm.application.controller;
 
+import com.crm.application.model.Event;
+import com.crm.application.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.crm.application.model.Event;
-import com.crm.application.service.EventService;
 
 import java.util.List;
 
@@ -22,16 +23,15 @@ public class EventController {
 
     @GetMapping(value = "/event/{id}")
     public ResponseEntity getEvent(@PathVariable("id") Long id) {
-        Event event = eventService.getEventById(id);
-        if (event == null) {
-            return new ResponseEntity<>("No event found for Id: " + id, HttpStatus.NOT_FOUND);
+        if (!eventService.getEventById(id).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(event, HttpStatus.OK);
+        return new ResponseEntity<>(eventService.getEventById(id).get(), HttpStatus.OK);
     }
 
     @GetMapping("/events")
-    public ResponseEntity listAllEvents() {
-        List<Event> events = (List<Event>) eventService.findAllEvent();
+    public ResponseEntity getAllEvents() {
+        List<Event> events = eventService.findAllEvent();
         if (events.isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
@@ -49,19 +49,28 @@ public class EventController {
             eventService.saveEvent(id, event);
             return new ResponseEntity<>(event, HttpStatus.CREATED);
         }
-
     }
 
     @DeleteMapping("/event/{id}")
     public ResponseEntity deleteEvent(@PathVariable("id") Long id) {
-        eventService.deleteEvent(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        if (eventService.getEventById(id).isPresent()) {
+            eventService.deleteEvent(id);
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(id, HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/event/edit/{id}")
-    public ResponseEntity<Event> editClient(@PathVariable("id") Long id, @RequestBody Event event) {
-        eventService.updateEvent(id, event);
-        return new ResponseEntity<>(HttpStatus.OK);
-
+    public ResponseEntity<Event> editEvent(@PathVariable("id") Long id, @RequestBody Event event, BindingResult bindingResult) {
+        if (eventService.getEventById(id).isPresent()) {
+            if (bindingResult.hasErrors()) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            } else {
+                eventService.updateEvent(id, event);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

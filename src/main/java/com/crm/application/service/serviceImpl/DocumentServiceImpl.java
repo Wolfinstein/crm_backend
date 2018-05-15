@@ -1,16 +1,16 @@
 package com.crm.application.service.serviceImpl;
 
 
+import com.crm.application.model.Document;
 import com.crm.application.repository.ClientRepository;
 import com.crm.application.repository.DocumentRepository;
-import com.crm.application.utilModels.DocumentMultipartForm;
+import com.crm.application.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.crm.application.model.Document;
-import com.crm.application.service.DocumentService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,13 +32,17 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public void addDocument(Long id, DocumentMultipartForm form) throws IOException {
+    public List<Document> getAllDocumentsByClientId(Long id) {
+        return documentRepository.findAllByClientId(id);
+    }
+
+    @Override
+    public void addDocument(Long id, MultipartFile file) throws IOException {
         Document document = new Document();
         document.setClient(clientRepository.findOne(id));
-        document.setContent(form.getMultipartFile().getBytes());
-        document.setExtension(form.getMultipartFile().getContentType());
-        document.setName(form.getMultipartFile().getOriginalFilename());
-        document.setDescription(form.getDescription());
+        document.setContent(file.getBytes());
+        document.setExtension(file.getContentType());
+        document.setName(file.getOriginalFilename());
 
         documentRepository.save(document);
     }
@@ -46,12 +50,6 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public void deleteById(Long id) {
         documentRepository.delete(id);
-    }
-
-
-    @Override
-    public Collection<Document> getAllDocuments(Long id) {
-        return documentRepository.findAllById(id);
     }
 
 

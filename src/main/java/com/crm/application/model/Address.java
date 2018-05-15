@@ -16,7 +16,7 @@ public class Address {
     private Long id;
 
     @JsonIgnore
-    @ManyToOne(targetEntity = Client.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Client.class)
     @JoinColumn(nullable = false, name = "client_id")
     private Client client;
 

@@ -1,10 +1,10 @@
 package com.crm.application.validator;
 
+import com.crm.application.model.Client;
+import com.crm.application.service.ClientService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import com.crm.application.model.Client;
-import com.crm.application.service.ClientService;
 
 @Component
 public class ClientValidator implements Validator {

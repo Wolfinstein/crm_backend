@@ -1,8 +1,12 @@
 package com.crm.application.service.serviceImpl;
 
+import com.crm.application.model.PasswordResetToken;
+import com.crm.application.model.User;
 import com.crm.application.repository.PasswordResetTokenRepository;
+import com.crm.application.service.EmailService;
+import com.crm.application.service.PasswordResetTokenService;
+import com.crm.application.service.UserService;
 import com.crm.application.utilModels.Mail;
-import com.crm.application.utilModels.user.PasswordForgot;
 import com.crm.application.utilModels.user.PasswordReset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,17 +15,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.crm.application.model.PasswordResetToken;
-import com.crm.application.model.User;
-import com.crm.application.service.EmailService;
-import com.crm.application.service.PasswordResetTokenService;
-import com.crm.application.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PasswordResetTokenServiceImpl implements PasswordResetTokenService {
@@ -46,9 +42,9 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
     }
 
     @Override
-    public void generateTokenAndSendMail(PasswordForgot form, HttpServletRequest request) {
+    public void generateTokenAndSendMail(String email, HttpServletRequest request) {
 
-        User user = userService.findUserByEmail(form.getEmail());
+        User user = userService.getUserByEmail(email).get();
 
         int port = 4200;
 
@@ -59,14 +55,14 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
         tokenRepository.save(token);
 
         Mail mail = new Mail();
-        mail.setFrom("no-reply@billennium.com");
+        mail.setFrom("no-reply@crm-application.com");
         mail.setTo(user.getEmail());
         mail.setSubject("Password reset request");
 
         Map<String, Object> model = new HashMap<>();
         model.put("token", token);
         model.put("user", user);
-        model.put("signature", "Billennium.com");
+        model.put("signature", "Crm-Application.com");
         String url = request.getScheme() + "://" + request.getServerName() + ":" + port; // request.getServerPort();
         model.put("resetUrl", url + "/reset-password?token=" + token.getToken());
         mail.setModel(model);
@@ -85,5 +81,10 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
         } catch (NoSuchElementException ex) {
             log.debug("Reset Password: " + ex.getMessage());
         }
+    }
+
+    @Override
+    public Optional<PasswordResetToken> findByToken(String token) {
+        return tokenRepository.findByToken(token);
     }
 }

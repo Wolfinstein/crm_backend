@@ -1,16 +1,16 @@
 package com.crm.application.service;
 
-import com.crm.application.utilModels.ClientsPerMonth;
 import com.crm.application.model.Client;
+import com.crm.application.utilModels.ClientsPerMonth;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ClientService {
 
-    Iterable<Client> listAllClient();
+    List<Client> getAllClients();
 
-    Client getClientById(long id);
+    Optional<Client> getClientById(Long id);
 
     Optional<Client> getClientByPesel(String pesel);
 
@@ -20,21 +20,21 @@ public interface ClientService {
 
     void saveClient(Client client);
 
-    Client updateClient(long id, Client client);
+    void updateClient(Long id, Client client);
 
-    void deleteClient(long id);
+    void deleteClient(Long id);
 
-    Iterable<Client> findAllClientFilter(String client_type, String email, String phone, String nip, String pesel, String name);
+    List<Client> getAllClientsWithParams(String client_type, String email, String phone, String nip, String pesel, String name);
 
-    void updateStatus(Long id, String status);
+    void updateClientStatus(Long id, String status);
 
     List<Client> getClientsWithGroupFilter(String listOfId);
 
-    List<ClientsPerMonth> clientsPerMonthStatistics(Integer year);
+    List<ClientsPerMonth> getClientsPerMonthStatistics(Integer year);
 
-    List<ClientsPerMonth> clientTypePercentage();
+    List<ClientsPerMonth> getClientTypePercentage();
 
-    List<List<Client>> clientsPerStatusTypes();
+    List<List<Client>> getClientsPerStatusTypes();
 
     List<Long> getClientsByGroupId(Long id);
 }

@@ -99,6 +99,7 @@ public class Client {
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
     private Set<Group> groups = new HashSet<>();
 
+
     public Client(String client_type, String email, String phone, String description, String firstName, String lastName, String pesel, String name, String nip, String regon, String type, String website, String trade, List<Document> documents, List<Address> addresses, List<Contact> contacts, List<Contractor> contractors) {
         this.client_type = client_type;
         this.email = email;

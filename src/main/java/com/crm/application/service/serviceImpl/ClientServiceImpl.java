@@ -1,14 +1,12 @@
 package com.crm.application.service.serviceImpl;
 
+import com.crm.application.model.Client;
 import com.crm.application.repository.ClientRepository;
 import com.crm.application.repository.GroupRepository;
+import com.crm.application.service.ClientService;
 import com.crm.application.utilModels.ClientStatusTypes;
 import com.crm.application.utilModels.ClientsPerMonth;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
-import com.crm.application.model.Client;
-import com.crm.application.service.ClientService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,14 +36,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    @Transactional(value = "transactionManager", isolation = Isolation.READ_COMMITTED)
-    public Iterable<Client> listAllClient() {
+    public List<Client> getAllClients() {
         return clientRepository.findAll();
     }
 
     @Override
-    public Client getClientById(long id) {
-        return clientRepository.findOne(id);
+    public Optional<Client> getClientById(Long id) {
+        return Optional.ofNullable(clientRepository.findOne(id));
     }
 
     @Override
@@ -69,7 +66,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client updateClient(long id, Client client) {
+    public void updateClient(Long id, Client client) {
         Client temp = clientRepository.findOne(id);
         temp.setClient_type(client.getClient_type());
         temp.setEmail(client.getEmail());
@@ -85,11 +82,11 @@ public class ClientServiceImpl implements ClientService {
         temp.setTrade(client.getTrade());
         temp.setWebsite(client.getWebsite());
         temp.setTrade(client.getTrade());
-        return clientRepository.save(temp);
+        clientRepository.save(temp);
     }
 
     @Override
-    public void deleteClient(long id) {
+    public void deleteClient(Long id) {
         try {
             clientRepository.delete(id);
             clientRepository.flush();
@@ -99,7 +96,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Iterable<Client> findAllClientFilter(String client_type, String email, String phone, String nip, String pesel, String name) {
+    public List<Client> getAllClientsWithParams(String client_type, String email, String phone, String nip, String pesel, String name) {
         String jpql = "SELECT c FROM Client c";
         String client_typeQuery = "";
         String emailQuery = "";
@@ -149,7 +146,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void updateStatus(Long id, String status) {
+    public void updateClientStatus(Long id, String status) {
         Client client = clientRepository.findOne(id);
         String statusString = status.substring(1, status.length() - 1);
 
@@ -200,7 +197,7 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public List<ClientsPerMonth> clientsPerMonthStatistics(Integer year) {
+    public List<ClientsPerMonth> getClientsPerMonthStatistics(Integer year) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         int newYearValue = 0;
         List<Client> addedInBetweenGivenYear = new ArrayList<>();
@@ -267,7 +264,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<ClientsPerMonth> clientTypePercentage() {
+    public List<ClientsPerMonth> getClientTypePercentage() {
 
         List<Client> clients = clientRepository.findAll();
 
@@ -280,7 +277,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<List<Client>> clientsPerStatusTypes() {
+    public List<List<Client>> getClientsPerStatusTypes() {
 
         List<Client> newOnes = clientRepository.findAll().stream().filter(c -> c.getStatus().equals(ClientStatusTypes.NewLead)).collect(Collectors.toList());
         List<Client> contactOnes = clientRepository.findAll().stream().filter(c -> c.getStatus().equals(ClientStatusTypes.ContactMade)).collect(Collectors.toList());

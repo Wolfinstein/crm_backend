@@ -43,14 +43,6 @@ public class DataLoader implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
 
-        clientRepository.save(new Client("Individual", "marcin.doniak1@billennium.pl", "1", "OpisMarcina2", "Marcin", "Doniak", "3", "", "", "", "", "", ""));
-        clientRepository.save(new Client("Individual", "dominik.czerwinski@billennium.pl", "5", "Opis", "Dominik", "Czerwinski", "4", "", "", "", "", "", ""));
-        clientRepository.save(new Client("Individual", "patryk.kochelski@gmail.com", "1", "Opis", "Patryk", "Kochelski", "2", "", "", "", "", "", ""));
-        clientRepository.save(new Client("Company", "billenn2ium@billennium.pl", "5", "Opis", "", "", "", "Billennium", "5", "5", "type", "www", "trade"));
-        clientRepository.save(new Client("Company", "billenni1um@billennium.pl", "5", "Opis", "", "", "", "Billennium", "52", "53", "type", "www", "trade"));
-        clientRepository.save(new Client("Company", "billensnium@billennium.pl", "5", "Opis", "", "", "", "Billennium", "53", "52", "type", "www", "trade"));
-        clientRepository.save(new Client("Company", "billenanium@billennium.pl", "5", "Opis", "", "", "", "Billennium", "54", "51", "type", "www", "trade"));
-
         contactRepository.save(new Contact(clientRepository.findOne(1L), "2", "2", "2", "2", "2", "2"));
         contactRepository.save(new Contact(clientRepository.findOne(1L), "32", "21", "23", "21", "32", "21"));
 

@@ -1,8 +1,8 @@
 package com.crm.application.repository;
 
+import com.crm.application.model.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.crm.application.model.Address;
 
 
 @Repository

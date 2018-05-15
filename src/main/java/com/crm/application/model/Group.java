@@ -20,7 +20,8 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Group() {}
+    public Group() {
+    }
 
     public Group(String name) {
         this.name = name;

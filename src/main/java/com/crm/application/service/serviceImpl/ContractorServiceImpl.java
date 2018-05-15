@@ -1,10 +1,10 @@
 package com.crm.application.service.serviceImpl;
 
+import com.crm.application.model.Contractor;
 import com.crm.application.repository.ClientRepository;
 import com.crm.application.repository.ContractorRepository;
-import org.springframework.stereotype.Service;
-import com.crm.application.model.Contractor;
 import com.crm.application.service.ContractorService;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 

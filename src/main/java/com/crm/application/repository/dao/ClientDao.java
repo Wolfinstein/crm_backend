@@ -1,7 +1,7 @@
 package com.crm.application.repository.dao;
 
-import org.springframework.stereotype.Repository;
 import com.crm.application.model.Client;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

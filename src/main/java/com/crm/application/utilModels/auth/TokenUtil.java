@@ -1,5 +1,7 @@
 package com.crm.application.utilModels.auth;
 
+import com.crm.application.model.User;
+import com.crm.application.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import com.crm.application.model.User;
-import com.crm.application.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

@@ -14,7 +14,7 @@ public class Document {
     private Long id;
 
     @JsonIgnore
-    @ManyToOne(targetEntity = Client.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Client.class)
     @JoinColumn(nullable = false, name = "client_id")
     private Client client;
 
@@ -28,15 +28,11 @@ public class Document {
     @Column(name = "content")
     private byte[] content;
 
-    @Column(name = "description", nullable = false)
-    private String description;
-
-    public Document(Client client, String name, String extension, byte[] content, String description) {
+    public Document(Client client, String name, String extension, byte[] content) {
         this.client = client;
         this.name = name;
         this.extension = extension;
         this.content = content;
-        this.description = description;
     }
 
     public Document() {
@@ -80,14 +76,6 @@ public class Document {
 
     public void setContent(byte[] content) {
         this.content = content;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
 

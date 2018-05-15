@@ -1,13 +1,12 @@
 package com.crm.application.controller;
 
-import com.crm.application.repository.ContactRepository;
+import com.crm.application.model.Contact;
+import com.crm.application.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.crm.application.model.Contact;
-import com.crm.application.service.ContactService;
 
 import javax.validation.Valid;
 
@@ -15,13 +14,10 @@ import javax.validation.Valid;
 @RestController
 public class ContactController {
 
-
-    private final ContactRepository contactRepository;
     private final ContactService contactService;
 
     @Autowired
-    public ContactController(ContactRepository contactRepository, ContactService contactService) {
-        this.contactRepository = contactRepository;
+    public ContactController(ContactService contactService) {
         this.contactService = contactService;
     }
 
@@ -57,11 +53,11 @@ public class ContactController {
 
     @RequestMapping(value = "/contact/{id}", method = RequestMethod.GET)
     public ResponseEntity<Contact> getContact(@PathVariable Long id) {
-        Contact contact = contactRepository.findOneById(id);
-        if (contact == null) {
+
+        if (!contactService.getContactById(id).isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(contact, HttpStatus.OK);
+        return new ResponseEntity<>(contactService.getContactById(id).get(), HttpStatus.OK);
     }
 
 }

@@ -1,9 +1,9 @@
 package com.crm.application.repository;
 
+import com.crm.application.model.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import com.crm.application.model.Client;
 
 import javax.transaction.Transactional;
 import java.util.Optional;

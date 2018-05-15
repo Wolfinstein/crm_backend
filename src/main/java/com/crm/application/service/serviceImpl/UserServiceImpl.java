@@ -1,7 +1,10 @@
 package com.crm.application.service.serviceImpl;
 
 
+import com.crm.application.model.User;
 import com.crm.application.repository.UserRepository;
+import com.crm.application.service.EmailService;
+import com.crm.application.service.UserService;
 import com.crm.application.utilModels.Mail;
 import com.crm.application.utilModels.user.AmaEmailForm;
 import com.crm.application.utilModels.user.Role;
@@ -9,13 +12,12 @@ import com.crm.application.utilModels.user.UserCreateForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.crm.application.model.User;
-import com.crm.application.service.EmailService;
-import com.crm.application.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -29,15 +31,16 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
     private final UserRepository userRepository;
 
+
     @Autowired
     public UserServiceImpl(EmailService emailService, UserRepository userRepository) {
         this.emailService = emailService;
         this.userRepository = userRepository;
     }
 
-    @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findOneByEmail(email);
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -105,7 +108,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePassword(String password, Long userId) {
-        userRepository.updatePassword(password, userId);
+        String encodedPassword = passwordEncoder().encode(password.substring(1, password.length() - 1));
+        userRepository.updatePassword(encodedPassword, userId);
     }
 
     public String getLoggedInUserId() {
@@ -117,16 +121,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void amaEmail(AmaEmailForm form, HttpServletRequest request) {
-
         Mail mail = new Mail();
-        mail.setFrom("ama-no-reply@billennium.com");
+        mail.setFrom("ama-no-reply@crm-application.com");
         mail.setTo("springrecoverytoken@gmail.com");
         mail.setSubject("Question from " + form.getName());
         Map<String, Object> model = new HashMap<>();
-        model.put("signature", "Billennium.com");
+        model.put("signature", "Crm-application.com");
         mail.setModel(model);
         model.put("form", form);
         emailService.sendEmail(mail, "ama-template");
+    }
+
+    @Override
+    public void updateEmail(String email, Long userId) {
+        userRepository.updateEmail(email.substring(1, email.length() - 1), userId);
     }
 
 

@@ -1,10 +1,13 @@
 package com.crm.application.service.serviceImpl;
 
+import com.crm.application.model.Event;
 import com.crm.application.repository.EventRepository;
 import com.crm.application.repository.UserRepository;
-import org.springframework.stereotype.Service;
-import com.crm.application.model.Event;
 import com.crm.application.service.EventService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -18,13 +21,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Iterable<Event> findAllEvent() {
+    public List<Event> findAllEvent() {
         return eventRepository.findAll();
     }
 
     @Override
-    public Event getEventById(Long id) {
-        return eventRepository.findById(id);
+    public Optional<Event> getEventById(Long id) {
+        return Optional.ofNullable(eventRepository.findById(id));
     }
 
     @Override

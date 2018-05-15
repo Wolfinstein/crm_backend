@@ -1,23 +1,20 @@
 package com.crm.application.controller;
 
-import com.crm.application.repository.ContractorRepository;
+import com.crm.application.model.Contractor;
+import com.crm.application.service.ContractorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.crm.application.model.Contractor;
-import com.crm.application.service.ContractorService;
 
 import javax.validation.Valid;
 
 @RestController
 public class ContractorController {
 
-    private final ContractorRepository contractorRepository;
     private final ContractorService contractorService;
 
-    public ContractorController(ContractorRepository contractorRepository, ContractorService contractorService) {
-        this.contractorRepository = contractorRepository;
+    public ContractorController(ContractorService contractorService) {
         this.contractorService = contractorService;
     }
 
@@ -53,11 +50,10 @@ public class ContractorController {
 
     @RequestMapping(value = "/contractor/{id}", method = RequestMethod.GET)
     public ResponseEntity<Contractor> getContractor(@PathVariable Long id) {
-        Contractor contractor = contractorRepository.findById(id);
-        if (contractor == null) {
+        if (!contractorService.getContractorById(id).isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(contractor, HttpStatus.OK);
+        return new ResponseEntity<>(contractorService.getContractorById(id).get(), HttpStatus.OK);
     }
 
 

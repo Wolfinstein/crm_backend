@@ -1,15 +1,16 @@
 package com.crm.application.service.serviceImpl;
 
-import com.crm.application.repository.ClientRepository;
-import com.crm.application.repository.GroupRepository;
-import com.crm.application.utilModels.user.GroupDropdownModel;
-import org.springframework.stereotype.Service;
 import com.crm.application.model.Client;
 import com.crm.application.model.Group;
+import com.crm.application.repository.ClientRepository;
+import com.crm.application.repository.GroupRepository;
 import com.crm.application.service.GroupService;
+import com.crm.application.utilModels.user.GroupDropdownModel;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -51,14 +52,14 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void addNewGroup(String name) {
-        Group group = new Group(name);
+        Group group = new Group(name.substring(1, name.length() - 1));
         groupRepository.save(group);
     }
 
     @Override
     public void updateGroup(String name, Long id) {
         Group temp = groupRepository.findOne(id);
-        temp.setName(name);
+        temp.setName(name.substring(1, name.length() - 1));
         groupRepository.save(temp);
     }
 
@@ -73,6 +74,26 @@ public class GroupServiceImpl implements GroupService {
         }
         return outList;
 
+    }
+
+    @Override
+    public List<Group> getAllGroups() {
+        return groupRepository.findAll();
+    }
+
+    @Override
+    public Optional<Group> getGroupById(Long id) {
+        return groupRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Group> getGroupByName(String name) {
+        return groupRepository.findByName(name.substring(1, name.length() - 1));
+    }
+
+    @Override
+    public void deleteGroup(Long id) {
+        groupRepository.delete(id);
     }
 
 

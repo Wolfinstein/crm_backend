@@ -1,6 +1,6 @@
 package com.crm.application.controller;
 
-import com.crm.application.repository.ClientRepository;
+import com.crm.application.service.ClientService;
 import com.crm.application.utilModels.CSVMultipartForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,25 +27,25 @@ import java.util.Date;
 public class CsvUploadController {
 
     private static final Logger log = LoggerFactory.getLogger(CsvUploadController.class);
-    private final ClientRepository clientRepository;
     private final JobLauncher jobLauncher;
     private final Job importClientJob;
+    private final ClientService clientService;
 
     @Autowired
-    public CsvUploadController(ClientRepository clientRepository, JobLauncher jobLauncher, Job importClientJob) {
-        this.clientRepository = clientRepository;
+    public CsvUploadController(JobLauncher jobLauncher, Job importClientJob, ClientService clientService) {
         this.jobLauncher = jobLauncher;
         this.importClientJob = importClientJob;
+        this.clientService = clientService;
     }
 
     @RequestMapping(value = "/clients/upload/csv", method = RequestMethod.POST)
-    public ResponseEntity<Integer> handleCSVCreateForm(@RequestParam(value = "file", required = false) @Valid MultipartFile file) throws IOException {
+    public ResponseEntity<Integer> uploadClientsWithCSV(@RequestParam(value = "file", required = false) @Valid MultipartFile file) throws IOException {
 
         CSVMultipartForm form = new CSVMultipartForm();
         form.setFile(file);
-        Integer before = clientRepository.findAll().size();
+        Integer before = clientService.getAllClients().size();
         fileOperations(form);
-        Integer after = clientRepository.findAll().size();
+        Integer after = clientService.getAllClients().size();
 
         if (before < after) {
             return new ResponseEntity<>((after - before), HttpStatus.OK);

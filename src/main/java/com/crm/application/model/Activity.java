@@ -15,11 +15,11 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    @ManyToOne(targetEntity = Client.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Client.class)
     @JoinColumn(nullable = false, name = "client_id")
     private Client client;
 
@@ -27,7 +27,7 @@ public class Activity {
     @Enumerated(EnumType.STRING)
     private ActivityType type_activity;
 
-    @NotEmpty(message = "{description.empty}")
+    @NotEmpty
     @Column(name = "description_activity", length = 100)
     private String description_activity;
 

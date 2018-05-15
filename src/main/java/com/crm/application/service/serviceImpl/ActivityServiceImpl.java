@@ -1,11 +1,13 @@
 package com.crm.application.service.serviceImpl;
 
+import com.crm.application.model.Activity;
 import com.crm.application.repository.ActivityRepository;
 import com.crm.application.repository.ClientRepository;
 import com.crm.application.repository.UserRepository;
-import org.springframework.stereotype.Service;
-import com.crm.application.model.Activity;
 import com.crm.application.service.ActivityService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
@@ -23,6 +25,16 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Activity getActivityById(Long id) {
         return activityRepository.findById(id);
+    }
+
+    @Override
+    public List<Activity> getActivitiesByUserId(Long id) {
+        return activityRepository.findAllByUserId(id);
+    }
+
+    @Override
+    public List<Activity> getActivitiesByClientId(Long id) {
+        return activityRepository.findAllByClientId(id);
     }
 
     @Override

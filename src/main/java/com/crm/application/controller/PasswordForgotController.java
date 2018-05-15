@@ -1,6 +1,7 @@
 package com.crm.application.controller;
 
-import com.crm.application.utilModels.user.PasswordForgot;
+import com.crm.application.service.PasswordResetTokenService;
+import com.crm.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.crm.application.service.PasswordResetTokenService;
-import com.crm.application.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,13 +28,13 @@ public class PasswordForgotController {
     }
 
     @PostMapping
-    public ResponseEntity processForgotPasswordForm(@RequestBody PasswordForgot form, HttpServletRequest request) {
+    public ResponseEntity processForgotPasswordForm(@RequestBody String email, HttpServletRequest request) {
 
         try {
-            if (userService.findUserByEmail(form.getEmail()) == null) {
+            if (!userService.getUserByEmail(email).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
-                passwordResetTokenService.generateTokenAndSendMail(form, request);
+                passwordResetTokenService.generateTokenAndSendMail(email, request);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
         } catch (HttpMessageNotReadableException ex) {

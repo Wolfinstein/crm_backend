@@ -1,5 +1,6 @@
 package com.crm.application.service.serviceImpl;
 
+import com.crm.application.service.EmailService;
 import com.crm.application.utilModels.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -7,7 +8,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-import com.crm.application.service.EmailService;
 
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;

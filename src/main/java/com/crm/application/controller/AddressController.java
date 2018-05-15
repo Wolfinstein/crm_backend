@@ -1,25 +1,22 @@
 package com.crm.application.controller;
 
-import com.crm.application.repository.AddressRepository;
+import com.crm.application.model.Address;
+import com.crm.application.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.crm.application.model.Address;
-import com.crm.application.service.AddressService;
 
 import javax.validation.Valid;
 
 @RestController
 public class AddressController {
 
-    private final AddressRepository addressRepository;
     private final AddressService addressService;
 
     @Autowired
-    public AddressController(AddressRepository addressRepository, AddressService addressService) {
-        this.addressRepository = addressRepository;
+    public AddressController(AddressService addressService) {
         this.addressService = addressService;
     }
 
@@ -34,7 +31,7 @@ public class AddressController {
     }
 
     @RequestMapping(value = "/address", method = RequestMethod.PUT)
-    public ResponseEntity<Address> updateAddress(@Valid @RequestBody Address address, BindingResult bindingResult) {
+    public ResponseEntity updateAddress(@Valid @RequestBody Address address, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         } else {
@@ -54,12 +51,11 @@ public class AddressController {
     }
 
     @RequestMapping(value = "/address/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Address> getAddress(@PathVariable Long id) {
-        Address address = addressRepository.findById(id);
-        if (address == null) {
+    public ResponseEntity getAddress(@PathVariable Long id) {
+        if (!addressService.getAddressById(id).isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(address, HttpStatus.OK);
+        return new ResponseEntity<>(addressService.getAddressById(id).get(), HttpStatus.OK);
     }
 
 

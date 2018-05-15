@@ -1,9 +1,9 @@
 package com.crm.application.service;
 
+import com.crm.application.model.User;
 import com.crm.application.utilModels.user.AmaEmailForm;
 import com.crm.application.utilModels.user.UserCreateForm;
 import org.springframework.stereotype.Service;
-import com.crm.application.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -20,8 +20,6 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    User findUserByEmail(String email);
-
     User create(UserCreateForm form);
 
     void deleteById(Long id);
@@ -34,4 +32,5 @@ public interface UserService {
 
     void amaEmail(AmaEmailForm form, HttpServletRequest request);
 
+    void updateEmail(String email, Long userId);
 }

@@ -1,10 +1,10 @@
 package com.crm.application.validator;
 
+import com.crm.application.service.UserService;
 import com.crm.application.utilModels.user.UserCreateForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import com.crm.application.service.UserService;
 
 
 @Component

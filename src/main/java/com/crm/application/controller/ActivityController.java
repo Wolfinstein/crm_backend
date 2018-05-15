@@ -1,44 +1,45 @@
 package com.crm.application.controller;
 
-import com.crm.application.repository.ActivityRepository;
+import com.crm.application.model.Activity;
+import com.crm.application.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.crm.application.model.Activity;
-import com.crm.application.service.ActivityService;
 
 import java.util.List;
 
 @RestController
 public class ActivityController {
 
-    private ActivityRepository activityRepository;
     private ActivityService activityService;
 
     @Autowired
-    public ActivityController(ActivityRepository activityRepository, ActivityService activityService) {
-        this.activityRepository = activityRepository;
+    public ActivityController(ActivityService activityService) {
         this.activityService = activityService;
     }
 
     @PostMapping(value = "/activity")
-    public ResponseEntity createActivity(@RequestBody Activity activity, Long clientId, Long userId) {
-        activityService.saveActivity(clientId, userId, activity);
+    public ResponseEntity createActivity(@RequestBody Activity activity, BindingResult bindingResult, Long clientId, Long userId) {
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        } else {
+            activityService.saveActivity(clientId, userId, activity);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
     }
 
     @DeleteMapping("/activity/{id}")
     public ResponseEntity deleteActivity(@PathVariable("id") long id) {
         activityService.deleteActivity(id);
-
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping(value = "activity/user/{id}")
-    public ResponseEntity<List<Activity>> getActivitiesByUserId(@PathVariable("id") Long id) {
-        List<Activity> activities = activityRepository.findAllByUserId(id);
+    public ResponseEntity getActivitiesByUserId(@PathVariable("id") Long id) {
+        List<Activity> activities = activityService.getActivitiesByUserId(id);
 
         if (activities.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -47,8 +48,8 @@ public class ActivityController {
     }
 
     @GetMapping(value = "activity/client/{id}")
-    public ResponseEntity<List<Activity>> getActivitiesByClientId(@PathVariable("id") Long id) {
-        List<Activity> activities = activityRepository.findAllByClientId(id);
+    public ResponseEntity getActivitiesByClientId(@PathVariable("id") Long id) {
+        List<Activity> activities = activityService.getActivitiesByClientId(id);
 
         if (activities.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

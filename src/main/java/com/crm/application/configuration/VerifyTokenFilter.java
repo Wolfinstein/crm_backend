@@ -1,10 +1,10 @@
 package com.crm.application.configuration;
 
+import com.crm.application.utilModels.auth.TokenUtil;
 import io.jsonwebtoken.JwtException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
-import com.crm.application.utilModels.auth.TokenUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

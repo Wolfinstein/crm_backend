@@ -1,7 +1,7 @@
 package com.crm.application.utilModels.session;
 
-import groovy.transform.EqualsAndHashCode;
 import com.crm.application.utilModels.response.OperationResponse;
+import groovy.transform.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = false)
 public class SessionResponse extends OperationResponse {

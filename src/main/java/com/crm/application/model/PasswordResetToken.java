@@ -8,13 +8,13 @@ import java.util.Date;
 public class PasswordResetToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String token;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = User.class)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
@@ -49,14 +49,14 @@ public class PasswordResetToken {
         return expiryDate;
     }
 
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
     public void setExpiryDate(int minutes) {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.MINUTE, minutes);
         this.expiryDate = now.getTime();
-    }
-
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
     }
 
     public boolean isExpired() {

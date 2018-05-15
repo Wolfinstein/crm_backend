@@ -1,10 +1,10 @@
 package com.crm.application.service.serviceImpl;
 
+import com.crm.application.model.Address;
 import com.crm.application.repository.AddressRepository;
 import com.crm.application.repository.ClientRepository;
-import org.springframework.stereotype.Service;
-import com.crm.application.model.Address;
 import com.crm.application.service.AddressService;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 

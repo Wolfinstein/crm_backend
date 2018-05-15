@@ -1,7 +1,7 @@
 package com.crm.application.service;
 
-import org.springframework.stereotype.Service;
 import com.crm.application.model.Address;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 

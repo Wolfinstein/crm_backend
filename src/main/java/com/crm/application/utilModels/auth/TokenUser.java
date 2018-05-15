@@ -1,9 +1,9 @@
 package com.crm.application.utilModels.auth;
 
+import com.crm.application.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.AuthorityUtils;
-import com.crm.application.model.User;
 
 public class TokenUser extends org.springframework.security.core.userdetails.User {
     private static final Logger log = LoggerFactory.getLogger(TokenUtil.class);

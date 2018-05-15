@@ -1,11 +1,9 @@
 package com.crm.application.utilModels.user;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import com.crm.application.validator.EqualFields;
 
 import javax.validation.constraints.Size;
 
-@EqualFields(baseField = "password", matchField = "confirmPassword")
 public class PasswordReset {
 
     @NotEmpty
