@@ -60,12 +60,10 @@ public class ClientController {
 
     @GetMapping(value = "/clients/pipeline")
     public ResponseEntity getClientsForPipeline() {
-        List<List<Client>> clientsList = clientService.getClientsPerStatusTypes();
-
-        if (clientsList.isEmpty()) {
+        if (clientService.getClientsPerStatusTypes().isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(clientsList, HttpStatus.OK);
+        return new ResponseEntity<>(clientService.getClientsPerStatusTypes(), HttpStatus.OK);
     }
 
 
